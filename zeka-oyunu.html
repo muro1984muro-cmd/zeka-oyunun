@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Zeka Oyunu</title>
+<style>
+body{
+    text-align:center;
+    background:#111;
+    color:white;
+    font-family:Arial;
+}
+#score, #timer{
+    font-size:25px;
+    margin:10px;
+}
+#box{
+    width:200px;
+    height:200px;
+    margin:40px auto;
+    border-radius:20px;
+    cursor:pointer;
+    transition:0.3s;
+}
+button{
+    padding:10px 20px;
+    font-size:18px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<h1>🧠 Renk Zeka Oyunu</h1>
+<div id="score">Puan: 0</div>
+<div id="timer">Süre: 30</div>
+<div id="box"></div>
+<button onclick="startGame()">Başlat</button>
+
+<script>
+let score = 0;
+let timeLeft = 30;
+let colors = ["red","blue","yellow","purple","orange"]; 
+let currentColor = "";
+let colorInterval;
+let timerInterval;
+
+function randomColor(){
+    // %20 yeşil
+    if(Math.random() < 0.2){
+        currentColor = "green";
+    } else {
+        currentColor = colors[Math.floor(Math.random() * colors.length)];
+    }
+    document.getElementById("box").style.background = currentColor;
+}
+
+function startGame(){
+    score = 0;
+    timeLeft = 30;
+    document.getElementById("score").innerText = "Puan: 0";
+    document.getElementById("timer").innerText = "Süre: 30";
+    randomColor();
+
+    clearInterval(colorInterval);
+    clearInterval(timerInterval);
+
+    colorInterval = setInterval(randomColor,2000);
+
+    timerInterval = setInterval(function(){
+        timeLeft--;
+        document.getElementById("timer").innerText = "Süre: " + timeLeft;
+
+        if(timeLeft <= 0){
+            clearInterval(colorInterval);
+            clearInterval(timerInterval);
+            alert("Süre bitti! Puanın: " + score);
+        }
+    },1000);
+}
+
+document.getElementById("box").onclick = function(){
+    if(timeLeft > 0){
+        if(currentColor === "green"){
+            score += 10;
+        } else {
+            score -= 5;
+        }
+        document.getElementById("score").innerText = "Puan: " + score;
+    }
+}
+</script>
+
+</body>
+</html>
